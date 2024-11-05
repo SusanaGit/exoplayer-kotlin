@@ -45,4 +45,13 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    val exoplayer_version = "2.18.5"
+
+    implementation("com.google.android.exoplayer:exoplayer-core:$exoplayer_version")
+    implementation("com.google.android.exoplayer:exoplayer-ui:$exoplayer_version")
+    implementation("com.google.android.exoplayer:exoplayer-dash:$exoplayer_version")
+    implementation("com.google.android.exoplayer:exoplayer-hls:$exoplayer_version")
+    implementation("com.google.android.exoplayer:exoplayer-smoothstreaming:$exoplayer_version")
+    implementation("com.google.android.exoplayer:exoplayer-rtsp:$exoplayer_version")
 }

@@ -23,6 +23,9 @@ class MainActivity : AppCompatActivity() {
         ActivityMainBinding.inflate(layoutInflater)
     }
 
+    private var currentWindow = 0
+    private var playbackPosition = 0L
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -46,6 +49,20 @@ class MainActivity : AppCompatActivity() {
         hideSystemUi()
         if ((Util.SDK_INT < 24 || player == null)) {
             initializePlayer()
+        }
+    }
+
+    public override fun onPause() {
+        super.onPause()
+        if (Util.SDK_INT < 24) {
+            releasePlayer()
+        }
+    }
+
+    public override fun onStop() {
+        super.onStop()
+        if (Util.SDK_INT >= 24) {
+            releasePlayer()
         }
     }
 
@@ -74,5 +91,15 @@ class MainActivity : AppCompatActivity() {
             controller.systemBarsBehavior =
                 WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
         }
+    }
+
+    private fun releasePlayer() {
+        player?.run {
+            playbackPosition = this.currentPosition
+            currentWindow = this.currentMediaItemIndex
+            playWhenReady = this.playWhenReady
+            release()
+        }
+        player = null
     }
 }

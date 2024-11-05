@@ -33,6 +33,10 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+
+    buildFeatures {
+        viewBinding = true
+    }
 }
 
 dependencies {
@@ -47,7 +51,6 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
 
     val exoplayer_version = "2.18.5"
-
     implementation("com.google.android.exoplayer:exoplayer-core:$exoplayer_version")
     implementation("com.google.android.exoplayer:exoplayer-ui:$exoplayer_version")
     implementation("com.google.android.exoplayer:exoplayer-dash:$exoplayer_version")

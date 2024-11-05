@@ -23,6 +23,7 @@ class MainActivity : AppCompatActivity() {
         ActivityMainBinding.inflate(layoutInflater)
     }
 
+    private var playWhenReady = true
     private var currentWindow = 0
     private var playbackPosition = 0L
 
@@ -47,21 +48,21 @@ class MainActivity : AppCompatActivity() {
     public override fun onResume() {
         super.onResume()
         hideSystemUi()
-        if ((Util.SDK_INT < 24 || player == null)) {
+        if ((Util.SDK_INT <= 23 || player == null)) {
             initializePlayer()
         }
     }
 
     public override fun onPause() {
         super.onPause()
-        if (Util.SDK_INT < 24) {
+        if (Util.SDK_INT <= 23) {
             releasePlayer()
         }
     }
 
     public override fun onStop() {
         super.onStop()
-        if (Util.SDK_INT >= 24) {
+        if (Util.SDK_INT > 23) {
             releasePlayer()
         }
     }
@@ -74,7 +75,15 @@ class MainActivity : AppCompatActivity() {
                 viewBinding.videoView.player = exoPlayer
                 val mediaItem = MediaItem.fromUri(getString(R.string.media_url_mp3))
                 exoPlayer.setMediaItem(mediaItem)
+                // indica al reproductor que tiene que buscar una posición en la ventana
+                exoPlayer.seekTo(currentWindow, playbackPosition)
+                // comienza a reproducir contenido cuando se tienen los recursos
+                // si se acaba de iniciar la app empieza la reproducción desde el principio
+                exoPlayer.playWhenReady = playWhenReady
+                // indica al reproductor que debe adquirir los recursos necesarios para reproducir
+                exoPlayer.prepare()
             }
+
     }
 
     @SuppressLint("InlinedApi")
@@ -94,11 +103,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun releasePlayer() {
-        player?.run {
-            playbackPosition = this.currentPosition
-            currentWindow = this.currentMediaItemIndex
-            playWhenReady = this.playWhenReady
-            release()
+        player?.let {exoPlayer ->
+            playbackPosition = exoPlayer.currentPosition
+            currentWindow = exoPlayer.currentMediaItemIndex
+            playWhenReady = exoPlayer.playWhenReady
+            exoPlayer.release()
         }
         player = null
     }

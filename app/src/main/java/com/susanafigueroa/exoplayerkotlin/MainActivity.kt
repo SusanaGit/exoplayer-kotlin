@@ -76,7 +76,7 @@ class MainActivity : AppCompatActivity() {
                 val mediaItem = MediaItem.fromUri(getString(R.string.media_url_mp3))
                 exoPlayer.setMediaItem(mediaItem)
                 // indica al reproductor que tiene que buscar una posición en la ventana
-                exoPlayer.seekTo(currentWindow, playbackPosition)
+                exoPlayer.setMediaItems(listOf(mediaItem), currentWindow, playbackPosition)
                 // comienza a reproducir contenido cuando se tienen los recursos
                 // si se acaba de iniciar la app empieza la reproducción desde el principio
                 exoPlayer.playWhenReady = playWhenReady

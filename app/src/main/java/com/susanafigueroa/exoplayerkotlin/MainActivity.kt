@@ -73,7 +73,7 @@ class MainActivity : AppCompatActivity() {
             .build()
             .also { exoPlayer ->
                 viewBinding.videoView.player = exoPlayer
-                val mediaItem = MediaItem.fromUri(getString(R.string.media_url_mp3))
+                val mediaItem = MediaItem.fromUri(getString(R.string.media_url_mp4))
                 exoPlayer.setMediaItem(mediaItem)
                 // indica al reproductor que tiene que buscar una posición en la ventana
                 exoPlayer.setMediaItems(listOf(mediaItem), currentWindow, playbackPosition)
